@@ -1,15 +1,10 @@
-> git init
-
-> git add .
-
-> git commit -m "adding code"
-
->git branch -M master
-
-
-> git remote add origin https://github.com/Switchity/FastAPI_Frameworks.git
-
-> git push -u origin master
+echo "# python_nginx_zabbix" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M master
+git remote add origin https://github.com/Switchity/python_nginx_zabbix.git
+git push -u origin master
 
 ## Create project directory
 mkdir fastapi_project
