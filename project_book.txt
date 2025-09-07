@@ -1,0 +1,87 @@
+🏗️ Architecture Overview
+        ┌─────────────┐
+Client →│   Nginx     │→ (Load Control, Rate Limit, Buffering)
+        └─────┬───────┘
+              │
+       ┌──────▼─────────┐
+       │ Python Service │  (FastAPI / Flask / Django REST)
+       └──────┬─────────┘
+              │
+       ┌──────▼──────────┐
+       │   Zabbix Agent  │ (On Python host & Nginx host)
+       └──────┬──────────┘
+              │
+       ┌──────▼─────────┐
+       │   Zabbix Server│ → Grafana / Zabbix UI
+       └────────────────┘
+WSGI (Web Server Gateway Interface):
+This is the older standard for Python web applications. It's a synchronous protocol.
+Servers like Waitress, Gunicorn, and uWSGI are built to work with WSGI applications
+(like Flask or Django). The protocol defines how the server passes a request (environ)
+and receives a response (start_response).
+
+ASGI (Asynchronous Server Gateway Interface):
+This is the newer, modern standard for Python. It's designed to handle asynchronous and long-lived connections
+(like websockets). Frameworks like FastAPI, Starlette, and Quart are built on the ASGI standard. The protocol
+requires the server to pass three arguments: scope, receive, and send.
+
+The traceback you're seeing shows that Waitress, which is a WSGI server, is trying to call your FastAPI
+application with the two WSGI arguments (environ and start_response). Your FastAPI application, however,
+expects the three ASGI arguments (scope, receive, and send), leading to the TypeError because the send argument is missing.
+
+Run your application with Uvicorn:
+
+
+Install zabbix-agent on the Python server:
+
+Monitor CPU, memory, disk, network.
+
+Custom checks: request latency, request count, error rate (via logs or app metrics).
+
+3.3 Zabbix Server
+
+Collects data from agents and SNMP/http checks.
+
+Templates:
+
+Template App Nginx by Zabbix agent
+
+Template OS Linux by Zabbix agent
+
+Custom template for Python API metrics
+
+🔹 Step 4: Visualization
+
+In Zabbix Dashboard or Grafana (via Zabbix plugin), visualize:
+
+Traffic (RPS, bandwidth)
+
+Latency (95th percentile response time)
+
+Error rates (4xx, 5xx)
+
+System CPU, memory, disk
+
+Nginx connections (active, waiting)
+
+Requests dropped by rate limiting
+
+Example dashboards:
+
+Nginx Load Control Efficiency
+
+Python API Performance
+
+System Health
+
+✅ Benefits of This Setup
+
+Nginx: absorbs traffic spikes, protects backend.
+
+Python API: focused only on business logic.
+
+Zabbix: gives observability into both Nginx & API.
+
+Scalability: can add more API servers under Nginx upstream.
+
+Visual Insights: proactive detection of overload situations.
