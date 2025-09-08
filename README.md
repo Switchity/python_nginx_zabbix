@@ -82,5 +82,7 @@ uvicorn app.app:app --host 0.0.0.0 --port 8000
 ## now run nginx server as it take 8000 port
 C:\Users\chandan\Downloads\nginx-1.28.0\nginx-1.28.0>.\nginx.exe -c "D:\python_nginx_zabbix\nginx\nginx.conf"
 
+### if you will select the folder of nginx
+> .\nginx.exe -c  "D:\python_nginx_zabbix\nginx\nginx.conf" '
 ## test
 http://localhost:8080/
